@@ -1,0 +1,13 @@
+names:
+- lock
+- unlock
+nc: 2
+roboflow:
+  license: CC BY 4.0
+  project: lock-ulpxs
+  url: https://universe.roboflow.com/fdgfdgsdf/lock-ulpxs/dataset/10
+  version: 10
+  workspace: fdgfdgsdf
+test: test/images
+train: train/images
+val: valid/images

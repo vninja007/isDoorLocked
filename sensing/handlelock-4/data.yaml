@@ -1,0 +1,13 @@
+names:
+- Door Handle
+- Lock
+nc: 2
+roboflow:
+  license: CC BY 4.0
+  project: door-handle-5lnka
+  url: https://universe.roboflow.com/ben-gurion-university-of-the-negev/door-handle-5lnka/dataset/4
+  version: 4
+  workspace: ben-gurion-university-of-the-negev
+test: ../test/images
+train: Door-Handle-4/train/images
+val: Door-Handle-4/valid/images
