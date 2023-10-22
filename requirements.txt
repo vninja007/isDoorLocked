@@ -1,2 +1,1 @@
-ultralytics==8.0.134
-roboflow
+image-similarity-measures
