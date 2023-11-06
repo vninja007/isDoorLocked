@@ -58,8 +58,9 @@ b1dcounter = 0
 
 uploadqueue = []
 
+LASTUPLOAD = time.time()
 while True:
-    tic = time.time()
+    FPSSTART = time.time()
 
     ret, img = cam.read()
     #img = cv2.imread('../dchc.png')
@@ -77,7 +78,7 @@ while True:
         b1hcounter = 0
     elif(b1hstatus==hstatus and b2hstatus!=b1hstatus): #waiting to change
         b1hcounter += 1
-        if(b1hcounter > 10): #Success change.
+        if(b1hcounter > 15): #Success change.
             uploadqueue.append(f'handle {b1hstatus}')
             b1hcounter = 0
             b2hstatus = b1hstatus
@@ -87,12 +88,16 @@ while True:
         b1dcounter = 0
     elif(b1dstatus==dstatus and b2dstatus!=b1dstatus): #waiting to change
         b1dcounter += 1
-        if(b1dcounter > 10): #Success change.
+        if(b1dcounter > 15): #Success change.
             uploadqueue.append(f'deadbolt {b1dstatus}')
             b1dcounter = 0
             b2dstatus = b1dstatus
 
-    toc = time.time()
-    print(1/(toc-tic))
-    print(b1hcounter, b1dcounter, uploadqueue)
+    if(uploadqueue and time.time()-LASTUPLOAD>1): #max 60 readings/min = 1 reading/sec
+        print(f"upload {uploadqueue.pop(0)}")
+        time.sleep(0.25) #MIMIC SENDING DATA
+        LASTUPLOAD = time.time()
+    FPSEND = time.time()
+    #print(1/(FPSEND-FPSSTART))
+    #print(b1hcounter, b1dcounter, uploadqueue)
 
