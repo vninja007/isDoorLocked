@@ -1,1 +1,2 @@
-image-similarity-measures
+adafruit-io
+pyyaml

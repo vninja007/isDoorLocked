@@ -2,6 +2,11 @@ import cv2
 import numpy as np
 from skimage.metrics import structural_similarity
 import time 
+from Adafruit_IO import Client, Data
+import yaml
+
+logins = yaml.safe_load(open('priv.yml'))
+aio = Client(logins['username'], logins['key'])
 # read image
 tmplt_handle = cv2.imread('templates/template_open2.png', cv2.IMREAD_UNCHANGED)
 tmplt_deadbolt = cv2.imread('templates/template_deadbolt.png', cv2.IMREAD_UNCHANGED)
@@ -94,10 +99,15 @@ while True:
             b2dstatus = b1dstatus
 
     if(uploadqueue and time.time()-LASTUPLOAD>1): #max 60 readings/min = 1 reading/sec
-        print(f"upload {uploadqueue.pop(0)}")
-        time.sleep(0.25) #MIMIC SENDING DATA
+        item = uploadqueue.pop(0)
+        data = Data(value=item)
+        if(item[0] == 'h'): #handle
+            aio.create_data('handle', data)
+        else: #deadbolt
+            aio.create_data('deadbolt',data)
+        print(f"upload {item}")
         LASTUPLOAD = time.time()
     FPSEND = time.time()
-    #print(1/(FPSEND-FPSSTART))
+    #print(f"FPS: {int(1/(FPSEND-FPSSTART))}")
     #print(b1hcounter, b1dcounter, uploadqueue)
 
